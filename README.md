@@ -1,2 +1,2 @@
 # storage
-Decentralized storage for scientific publications
+Blockchain agnostic decentralized storage of scientific publications
