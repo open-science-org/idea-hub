@@ -6,6 +6,8 @@ authors:
 tags:
 - knowledge
 - example
+- nested/example
+- nested/tag
 created_at: 2016-06-29
 updated_at: 2016-06-30
 tldr: This is short description of the content and findings of the post.
