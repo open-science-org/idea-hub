@@ -1,4 +1,4 @@
-# Interplanetary Knowledge System or Interplanetary Idea System (IPIS)
+# Interplanetary Knowledge System(IPKS) or Interplanetary Idea System (IPIS)
 Blockchain agnostic decentralized storage of scientific publications
 
 
