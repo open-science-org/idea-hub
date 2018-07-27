@@ -5,7 +5,7 @@ Pub-hub is a decentralized knowledge repository where researchers can **publish 
 *This project is closely related to Generalized Idea Protocol (GIP) https://github.com/open-science-org/GIP*
 
 ## Design Choice #1 : Use IPFS and IPNS
-*proposed by Kirk Gosik*
+*proposed by Abinash Koirala*
 
 Decentralized file storage and query layers atop IPFS to support human readable queries. Currently, IPFS only allows look-ups for files using its hash generated while storing it in the IPFS network. And here are some of my ideas regarding how to provide a DCMI(or any other format) query layer on top of IPFS:
 
