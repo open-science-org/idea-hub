@@ -4,6 +4,9 @@ Pub-hub is a decentralized knowledge repository where researchers can **publish 
 
 *This project is closely related to Generalized Idea Protocol (GIP) https://github.com/open-science-org/GIP*
 
+
+![Decentralized Publishing Platform Based on Proof of Idea](dissemination.png)
+
 For more information, see Figure 2 in our **Proof of Idea** whitepaper https://github.com/open-science-org/wiki/blob/master/Proof_of_Idea.pdf. The Figure 2 describes our proposed decentralized publishing system based on incentive mechanism supported by Proof of Idea.
 
 ## Design Choice #1 : Use IPFS and IPNS
