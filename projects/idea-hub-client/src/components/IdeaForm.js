@@ -10,7 +10,7 @@ class IdeaForm extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.uploadIdeaTextToIPFS = this.uploadIdeaTextToIPFS.bind(this);
-    this.ipfsNode = new IPFS({ repo: String(Math.random() + Date.now()) });
+    this.ipfsNode = new IPFS();
     this.state = {
       ipfsOptions: {
         id: null,
