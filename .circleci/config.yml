@@ -1,0 +1,30 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:11.3
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          command: |
+            cd projects/idea-hub-client
+            yarn install
+            yarn run buildGhPages
+            cd ../../
+
+      - run:
+          command: |
+            git config --global user.email "oso.network.ci@gmail.com"
+            git config --global user.name "OSOCi"
+            git add docs/*
+            git commit -m "CI Built idea-hub-client [ci skip]"
+            git push
