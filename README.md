@@ -24,7 +24,7 @@ Decentralized file storage and query layers atop IPFS to support human readable 
 
 4. We already have different distributed/decentralized object storage projects like storj.io and others which we can use to store our metadata object. We provide publications search api on top of these kinds of projects. I have not delved much into these projects but Storj in particular seems to support some expressive queries.
 
-## Design Choice #2 : Use IPFS (Distributed Metadata storage) and searh nodes
+## Design Choice #2 : Use IPFS (Distributed Metadata storage) and search nodes
 *proposed by Sandip Pandey*
 
 Assuming the documents are stored in IPFS, each document will have an IPFS hash. Unless this unique hash is known it is not possible to retrieve the document otherwise. This leads to the necessity for a metadata store which can facilitate a distributed search using humanly-readable queries.
