@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // CANVAS SET UP ****************************************
   var output = d3.select("#vis");
   var width = window.innerWidth;
-  var height = window.innerHeight;
+  var height = window.outerHeight;
 
   output.attr("width", width).attr("height", height);
   var context = output.node().getContext("2d");
@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function() {
         d.y =
           height / 2 +
           (d.radius * 50 - 25) -
-          Math.sin(time * 0.0001 + d.x * 0.01) * (height / 10);
+          Math.sin(time * 0.0001 + d.x * 0.01) * (height / 14);
         //d.y = (height / 2) + ((d.radius * 50) - 25) - Math.cos((Math.cos((time * 0.0001) + d.x * 0.01) * (height / 6)));
       } else if (stepNum === 3) {
         d.x = width / 2;
@@ -228,5 +228,6 @@ document.addEventListener("DOMContentLoaded", function() {
   context.translate(width / 2, height / 2);
   context.rotate((-90 * Math.PI) / 180);
   context.translate(-width / 2, -height / 2);
+  context.translate(0, width / 3.5);
   window.requestAnimationFrame(step);
 });
