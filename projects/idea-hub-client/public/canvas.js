@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // DOT SET UP ****************************************
 
   var dots = [];
-  var numDots = height / 2;
+  var numDots = height / 3;
   radius = 4;
 
   var lineDistance = 65;
@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function() {
         d.y =
           height / 2 +
           (d.radius * 50 - 25) -
-          Math.sin(time * 0.0001 + d.x * 0.01) * (height / 6);
+          Math.sin(time * 0.0001 + d.x * 0.01) * (height / 13);
         //d.y = (height / 2) + ((d.radius * 50) - 25) - Math.cos((Math.cos((time * 0.0001) + d.x * 0.01) * (height / 6)));
       } else if (stepNum === 3) {
         d.x = width / 2;
