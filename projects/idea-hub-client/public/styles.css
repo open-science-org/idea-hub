@@ -1,0 +1,11 @@
+#container {
+  position: relative;
+}
+
+canvas {
+  position: absolute;
+}
+
+#root {
+  position: absolute;
+}
