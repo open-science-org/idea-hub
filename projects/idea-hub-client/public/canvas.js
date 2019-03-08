@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // DOT SET UP ****************************************
 
   var dots = [];
-  var numDots = height / 2.5;
+  var numDots = height / 2;
   radius = 4;
 
   var lineDistance = 65;
@@ -111,12 +111,12 @@ document.addEventListener("DOMContentLoaded", function() {
   var colorRampLines = d3
     .scaleLinear()
     .domain([0, lineDistance])
-    .range(["rgba(51,51,51,0.5)", "rgba(51,51,51,0)"]);
+    .range(["rgba(192,192,192,0.5)", "rgba(192,192,192,0)"]);
 
   var colorRampLinesV2 = d3
     .scaleLinear()
     .domain([0, lineDistance])
-    .range([0.5, 0]);
+    .range([colorRampNumDots(i), "rbba(0,0,0)"]);
 
   for (var i = 0; i < numDots; i++) {
     //dots.push({x: (Math.random() * width) - radius, y: (Math.random() * height) - radius, direction: (Math.random() * (Math.PI * 2))});
@@ -204,10 +204,9 @@ document.addEventListener("DOMContentLoaded", function() {
           context.beginPath();
           context.moveTo(dot.x, dot.y);
           context.lineTo(d.x, d.y);
-          context.strokeStyle = colorRampLines(distance);
-          //context.strokeStyle = colorRampNumDots(i)
+          context.strokeStyle = colorRampLines(distance, i);
+          //context.strokeStyle = colorRampNumDots(i);
           context.stroke();
-          context.closePath();
         }
       });
       var mouseDistance = Math.sqrt(
