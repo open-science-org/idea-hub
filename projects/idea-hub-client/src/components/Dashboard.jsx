@@ -1,11 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
 import IdeaForm from "./IdeaForm";
-import { PageHeader, Tabs, Tab, Container } from "react-bootstrap";
+import { Tabs, Tab, Container, Button, Modal } from "react-bootstrap";
 import Warning from "./Warning";
 
 class Dashboard extends React.Component {
   //const web3Context = context.web3;
+  constructor(props, context) {
+    super(props, context);
+
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+
+    this.state = {
+      show: true
+    };
+  }
+
+  handleClose() {
+    this.setState({ show: false });
+  }
+
+  handleShow() {
+    this.setState({ show: true });
+  }
 
   /**
    * web3Context = {
@@ -16,32 +34,28 @@ class Dashboard extends React.Component {
    * }
    */
 
-  static contextTypes = {};
-
-  state = {
-    modalShow: true
-  };
-
   render() {
-    let modalClose = () => this.setState({ ...this.state, modalShow: false });
     return (
-      <Container fluid={true}>
-        <header>
-          Idea Hub: <small>Submit and view ideas in OSO Idea Network</small>
-        </header>
-        <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
-          <Tab eventKey={1} title="Submit an Idea">
-            <IdeaForm />
-          </Tab>
-          <Tab eventKey={2} title="View your Ideas">
-            Tab 2 content
-          </Tab>
-          <Tab eventKey={3} title="Explore the Idea network">
-            Tab 3 content
-          </Tab>
-        </Tabs>
-        <Warning show={this.state.modalShow} onHide={modalClose} />
-      </Container>
+      <>
+        <Button variant="primary" onClick={this.handleShow}>
+          Launch demo modal
+        </Button>
+
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={this.handleClose}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
     );
   }
 }
