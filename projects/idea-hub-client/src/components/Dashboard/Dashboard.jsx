@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import IdeaForm from "../IdeaForm";
-import { Tabs, Tab, Container, Button, Modal } from "react-bootstrap";
+import { Tabs, Tab, Container, Button, Modal, Nav } from "react-bootstrap";
 import Warning from "../Warning/Warning";
 
 class Dashboard extends React.Component {
@@ -35,7 +35,25 @@ class Dashboard extends React.Component {
    */
 
   render() {
-    return <Warning />;
+    return (
+      <>
+        <Warning />
+        <h1>
+          Idea Hub: <small>Submit and view ideas in OSO Idea Network</small>
+        </h1>
+        <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
+          <Tab eventKey={1} title="Submit an Idea">
+            <IdeaForm />
+          </Tab>
+          <Tab eventKey={2} title="View your Ideas">
+            Tab 2 content
+          </Tab>
+          <Tab eventKey={3} title="Explore the Idea network">
+            Tab 3 content
+          </Tab>
+        </Tabs>
+      </>
+    );
   }
 }
 
