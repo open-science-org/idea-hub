@@ -10065,6 +10065,12 @@ react-dom@^16.6.3:
     prop-types "^15.6.2"
     scheduler "^0.11.2"
 
+react-dropzone-uploader@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/react-dropzone-uploader/-/react-dropzone-uploader-2.6.0.tgz#80a107b9ccc54ceea2d0647fa8fa814d86129bc6"
+  dependencies:
+    "@babel/runtime" "^7.1.2"
+
 react-error-overlay@^5.1.4:
   version "5.1.4"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.4.tgz#88dfb88857c18ceb3b9f95076f850d7121776991"
