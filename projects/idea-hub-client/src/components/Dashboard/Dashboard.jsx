@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import IdeaForm from "./IdeaForm";
+import IdeaForm from "../IdeaForm";
 import { Tabs, Tab, Container, Button, Modal } from "react-bootstrap";
-import Warning from "../components/Warning/Warning";
+import Warning from "../Warning/Warning";
 
 class Dashboard extends React.Component {
   //const web3Context = context.web3;

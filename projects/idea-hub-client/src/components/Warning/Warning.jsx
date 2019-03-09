@@ -1,5 +1,6 @@
 import React from "react";
 import { Tabs, Tab, Container, Button, Modal } from "react-bootstrap";
+import classes from "./Warning.module.css";
 
 class Warning extends React.Component {
   //const web3Context = context.web3;
@@ -44,7 +45,7 @@ class Warning extends React.Component {
           </p>
           <p>
             Currently, this app is under active development so{" "}
-            <strong>
+            <strong className={classes.Text}>
               {" "}
               please do not use it with your Ethereum Mainnet address{" "}
             </strong>
