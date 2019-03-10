@@ -1,5 +1,5 @@
 import React from "react";
-import { Tabs, Tab, Container, Button, Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import classes from "./Warning.module.css";
 
 class Warning extends React.Component {
