@@ -1,13 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import IPFS from "ipfs";
-import {
-  FormGroup,
-  FormControl,
-  HelpBlock,
-  Col,
-  Button
-} from "react-bootstrap";
+import classes from "./IdeaForm.module.css";
+import { FormGroup, FormControl, Col, Button } from "react-bootstrap";
+import Dropzone from "react-dropzone-uploader";
 
 const PUBLIC_GATEWAY = "https://ipfs.io/ipfs";
 
@@ -28,6 +24,20 @@ class IdeaForm extends React.Component {
       added_file_contents: ""
     };
   }
+
+  getUploadParams = ({ meta }) => {
+    return { url: "https://httpbin.org/post" };
+  };
+
+  // called every time a file's `status` changes
+  handleChangeStatus = ({ meta, file }, status) => {
+    console.log(status, meta, file);
+  };
+
+  // receives array of files that are done uploading when submit button is clicked
+  handleSubmit = files => {
+    console.log(files.map(f => f.meta));
+  };
 
   uploadIdeaTextToIPFS() {
     this.ipfsNode.files.add(
@@ -137,7 +147,18 @@ class IdeaForm extends React.Component {
               <Button onClick={this.uploadIdeaTextToIPFS}>Submit Idea</Button>
             </Col>
           </FormGroup>
+
+          <div className={classes.Square} />
         </form>
+        <Dropzone
+          styles={{
+            dropzone: { width: "200px", height: "200px", overflow: "hidden" }
+          }}
+          getUploadParams={this.getUploadParams}
+          onChangeStatus={this.handleChangeStatus}
+          onSubmit={this.handleSubmit}
+          accept="image/*,audio/*,video/*"
+        />
       </div>
     );
   }

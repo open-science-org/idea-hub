@@ -1,0 +1,6 @@
+.Dropzone{
+  border-color: red;
+  color: black;
+  min: 200px;
+  border-style: none;
+}
