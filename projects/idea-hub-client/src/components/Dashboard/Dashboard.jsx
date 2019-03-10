@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import IdeaForm from "../IdeaForm";
-import { Tabs, Tab, Container, Button, Modal, Nav } from "react-bootstrap";
+import IdeaForm from "../IdeaForm/IdeaForm";
+import { Tabs, Tab } from "react-bootstrap";
 import Warning from "../Warning/Warning";
 
 class Dashboard extends React.Component {
