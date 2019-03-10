@@ -102,63 +102,46 @@ class IdeaForm extends React.Component {
 
   render() {
     return (
-      <div style={{ textAlign: "center" }}>
-        <h1>Connected to ethereum and ipfs network!</h1>
-        <p>Ethereum network: {this.context.web3.network}</p>
-        <p>
-          Your IPFS version is <strong>{this.state.ipfsOptions.version}</strong>
-        </p>
-        <p>
-          Your IPFS protocol version is{" "}
-          <strong>{this.state.ipfsOptions.protocol_version}</strong>
-        </p>
-        <hr />
-        <p>Using your ethereum account: {this.context.web3.selectedAccount}</p>
-        <p>
-          Your IPFS ID is <strong>{this.state.ipfsOptions.id}</strong>
-        </p>
-        <hr />
-        <p>Submitted Idea's IPFS hash: {this.state.added_file_hash}</p>
-        <p>Submitted Idea's content: {this.state.added_file_contents}</p>
-        <p>
-          Checkout the uploaded idea at: {PUBLIC_GATEWAY}/
-          {this.state.added_file_hash}
-        </p>
-        <hr />
-        <form>
-          <FormGroup
-            controlId="formBasicText"
-            validationState={this.getValidationState()}
-          >
-            <h1>Submit an Idea text to OSO Idea network</h1>
-            <FormControl
-              type="text"
-              bsSize="small"
-              value={this.state.value}
-              placeholder="Enter text"
-              onChange={this.handleChange}
-            />
-            <FormControl.Feedback>
-              String should be more than 10 characters long
-            </FormControl.Feedback>
-          </FormGroup>
-          <FormGroup>
-            <Col smOffset={2} sm={10}>
-              <Button onClick={this.uploadIdeaTextToIPFS}>Submit Idea</Button>
-            </Col>
-          </FormGroup>
-
+      <div className={classes.UploadContainer}>
+        <div className={classes.InfoBox}>
+          <h1>Connected to ethereum and ipfs network!</h1>
+          <p>Ethereum network: {this.context.web3.network}</p>
+          <p>
+            Your IPFS version is{" "}
+            <strong>{this.state.ipfsOptions.version}</strong>
+          </p>
+          <p>
+            Your IPFS protocol version is{" "}
+            <strong>{this.state.ipfsOptions.protocol_version}</strong>
+          </p>
+          <hr />
+          <p>
+            Using your ethereum account: {this.context.web3.selectedAccount}
+          </p>
+          <p>
+            Your IPFS ID is <strong>{this.state.ipfsOptions.id}</strong>
+          </p>
+          <hr />
+          <p>Submitted Idea's IPFS hash: {this.state.added_file_hash}</p>
+          <p>Submitted Idea's content: {this.state.added_file_contents}</p>
+          <p>
+            Checkout the uploaded idea at: {PUBLIC_GATEWAY}/
+            {this.state.added_file_hash}
+          </p>
+          <hr />
+        </div>
+        <div className={classes.Upload}>
+          <Dropzone
+            styles={{
+              dropzone: { overflow: "hidden", borderStyle: "none" }
+            }}
+            getUploadParams={this.getUploadParams}
+            onChangeStatus={this.handleChangeStatus}
+            onSubmit={this.handleSubmit}
+            accept="image/*,audio/*,video/*"
+          />
           <div className={classes.Square} />
-        </form>
-        <Dropzone
-          styles={{
-            dropzone: { width: "200px", height: "200px", overflow: "hidden" }
-          }}
-          getUploadParams={this.getUploadParams}
-          onChangeStatus={this.handleChangeStatus}
-          onSubmit={this.handleSubmit}
-          accept="image/*,audio/*,video/*"
-        />
+        </div>
       </div>
     );
   }
