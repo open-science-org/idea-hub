@@ -133,7 +133,10 @@ class IdeaForm extends React.Component {
         <div className={classes.Upload}>
           <Dropzone
             styles={{
-              dropzone: { overflow: "hidden", borderStyle: "none" }
+              dropzone: {
+                overflow: "hidden",
+                borderStyle: "none"
+              }
             }}
             getUploadParams={this.getUploadParams}
             onChangeStatus={this.handleChangeStatus}
