@@ -38,7 +38,6 @@ class IdeaForm extends React.Component {
       const reader = new window.FileReader();
       reader.readAsArrayBuffer(file.file);
       reader.onloadend = () => {
-        console.log(Buffer(reader.result));
         this.saveToIpfs(Buffer(reader.result));
       };
     });
