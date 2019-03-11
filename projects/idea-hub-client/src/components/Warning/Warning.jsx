@@ -63,7 +63,7 @@ class Warning extends React.Component {
             Get Eth from Rinkeby
           </Button>
           <Button variant="primary" onClick={this.handleClose}>
-            I am not using my main address.
+            I am not using Ethereum Mainnet.
           </Button>
         </Modal.Footer>
       </Modal>
