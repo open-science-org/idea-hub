@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import IPFS from "ipfs";
 import classes from "./IdeaForm.module.css";
-import { FormGroup, FormControl, Col, Button } from "react-bootstrap";
 import Dropzone from "react-dropzone-uploader";
 
 const PUBLIC_GATEWAY = "https://ipfs.io/ipfs";
@@ -36,8 +35,26 @@ class IdeaForm extends React.Component {
 
   // receives array of files that are done uploading when submit button is clicked
   handleSubmit = files => {
-    console.log(files.map(f => f.meta));
+    console.log(files.map(file => file.meta));
+    files.map(file => {
+      const reader = new window.FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onloadend = () => {
+        console.log(Buffer(reader.result));
+      };
+    });
   };
+
+  captureFile(event) {
+    event.preventDefault();
+    const file = event.target.files[0];
+    const reader = new window.FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onloadend = () => {
+      this.setState({ buffer: Buffer(reader.result) });
+      console.log("buffer", this.state.buffer);
+    };
+  }
 
   uploadIdeaTextToIPFS() {
     this.ipfsNode.files.add(
