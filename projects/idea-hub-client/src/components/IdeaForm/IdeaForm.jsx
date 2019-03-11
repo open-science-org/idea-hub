@@ -35,26 +35,21 @@ class IdeaForm extends React.Component {
 
   // receives array of files that are done uploading when submit button is clicked
   handleSubmit = files => {
-    console.log(files.map(file => file.meta));
+    console.log(
+      files.map(file => {
+        console.log(file);
+        console.log(file.file);
+        console.log(file.file instanceof Blob);
+      })
+    );
     files.map(file => {
       const reader = new window.FileReader();
-      reader.readAsArrayBuffer(file);
+      reader.readAsArrayBuffer(file.file);
       reader.onloadend = () => {
         console.log(Buffer(reader.result));
       };
     });
   };
-
-  captureFile(event) {
-    event.preventDefault();
-    const file = event.target.files[0];
-    const reader = new window.FileReader();
-    reader.readAsArrayBuffer(file);
-    reader.onloadend = () => {
-      this.setState({ buffer: Buffer(reader.result) });
-      console.log("buffer", this.state.buffer);
-    };
-  }
 
   uploadIdeaTextToIPFS() {
     this.ipfsNode.files.add(
