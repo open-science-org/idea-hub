@@ -5,12 +5,15 @@ import classes from "./IdeaForm.module.css";
 import Dropzone from "react-dropzone-uploader";
 
 const PUBLIC_GATEWAY = "https://ipfs.io/ipfs";
+const ipfsClient = require("ipfs-http-client");
 
 class IdeaForm extends React.Component {
   constructor(props, context) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.uploadIdeaTextToIPFS = this.uploadIdeaTextToIPFS.bind(this);
+    this.ipfsClient = ipfsClient("/ip4/127.0.0.1/tcp/5001");
+    this.saveToIpfs = this.saveToIpfs.bind(this);
     this.ipfsNode = new IPFS();
     this.state = {
       ipfsOptions: {
@@ -24,10 +27,6 @@ class IdeaForm extends React.Component {
     };
   }
 
-  getUploadParams = ({ meta }) => {
-    return { url: "https://httpbin.org/post" };
-  };
-
   // called every time a file's `status` changes
   handleChangeStatus = ({ meta, file }, status) => {
     console.log(status, meta, file);
@@ -35,21 +34,31 @@ class IdeaForm extends React.Component {
 
   // receives array of files that are done uploading when submit button is clicked
   handleSubmit = files => {
-    console.log(
-      files.map(file => {
-        console.log(file);
-        console.log(file.file);
-        console.log(file.file instanceof Blob);
-      })
-    );
     files.map(file => {
       const reader = new window.FileReader();
       reader.readAsArrayBuffer(file.file);
       reader.onloadend = () => {
         console.log(Buffer(reader.result));
+        this.saveToIpfs(Buffer(reader.result));
       };
     });
   };
+
+  saveToIpfs(file) {
+    console.log("inside saveToIpfs");
+    let ipfsId;
+    this.ipfsClient
+      .add(file)
+      .then(response => {
+        console.log(response);
+        ipfsId = response[0].hash;
+        console.log(ipfsId);
+        this.setState({ added_file_hash: ipfsId });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
 
   uploadIdeaTextToIPFS() {
     this.ipfsNode.files.add(
