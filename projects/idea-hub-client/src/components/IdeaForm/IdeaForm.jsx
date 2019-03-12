@@ -12,9 +12,18 @@ class IdeaForm extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.uploadIdeaTextToIPFS = this.uploadIdeaTextToIPFS.bind(this);
+    this.uploadIdeaToIPFS = this.uploadIdeaToIPFS.bind(this);
+    this.publishFileHash = this.publishFileHash.bind(this);
     this.ipfsClient = ipfsClient("/ip4/127.0.0.1/tcp/5001");
     this.saveToIpfs = this.saveToIpfs.bind(this);
-    this.ipfsNode = new IPFS();
+    //node setup
+    this.ipfsNode = new IPFS({ EXPERIMENTAL: { pubsub: true } });
+    ipfs.swarm.connect(addr, function(err) {
+      if (err) {
+        throw err;
+      }
+      // if no err is present, connection is now open
+    });
     this.state = {
       ipfsOptions: {
         id: null,
@@ -38,7 +47,9 @@ class IdeaForm extends React.Component {
       const reader = new window.FileReader();
       reader.readAsArrayBuffer(file.file);
       reader.onloadend = () => {
-        this.saveToIpfs(Buffer(reader.result));
+        /* this.saveToIpfs(Buffer(reader.result)); */
+        /* You must use file.file to get the blob  */
+        this.uploadIdeaToIPFS(Buffer(reader.result));
       };
     });
   };
@@ -80,6 +91,41 @@ class IdeaForm extends React.Component {
         });
       }
     );
+  }
+
+  uploadIdeaToIPFS(file) {
+    console.log("over here");
+    this.ipfsNode.add(file, (err, filesAdded) => {
+      if (err) {
+        throw err;
+      }
+
+      const hash = filesAdded[0].hash;
+      this.setState(
+        {
+          added_file_hash: hash
+        },
+        () => {
+          this.publishFileHash();
+        }
+      );
+    });
+  }
+
+  publishFileHash() {
+    console.log("inside publishFileHash");
+    console.log("file hash is:");
+    console.log(this.state.added_file_hash);
+
+    const topic = "testing123";
+    const msg = Buffer.from(this.state.added_file_hash);
+
+    this.ipfsNode.pubsub.publish(topic, msg, err => {
+      if (err) {
+        return console.error(`failed to publish to ${topic}`, err);
+      }
+      console.log(`published to ${topic}`);
+    });
   }
 
   componentDidMount() {
