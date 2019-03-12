@@ -1,5 +1,5 @@
 import React from "react";
-import { Tabs, Tab, Container, Button, Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import classes from "./Warning.module.css";
 
 class Warning extends React.Component {
@@ -63,7 +63,7 @@ class Warning extends React.Component {
             Get Eth from Rinkeby
           </Button>
           <Button variant="primary" onClick={this.handleClose}>
-            I am not using my main address.
+            I am not using Ethereum Mainnet.
           </Button>
         </Modal.Footer>
       </Modal>

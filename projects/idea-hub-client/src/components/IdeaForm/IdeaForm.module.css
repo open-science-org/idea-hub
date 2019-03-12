@@ -1,0 +1,30 @@
+.Upload{
+  display: flex;
+  width: 50%;
+  height: 80vh;
+  border-radius: 5px;
+}
+
+.InfoBox{
+  padding: 5%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 80vh;
+  border-radius: 5px;
+}
+
+.UploadContainer{
+  margin-top: 5vh;
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+  margin-right: auto;
+  height: 80vh;
+  width: 80%;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
