@@ -9,7 +9,6 @@ const WStar = require("libp2p-webrtc-star");
 const wstar = new WStar({ wrtc });
 
 const PUBLIC_GATEWAY = "https://ipfs.io/ipfs";
-const ipfsClient = require("ipfs-http-client");
 
 class IdeaForm extends React.Component {
   constructor(props, context) {
@@ -19,9 +18,7 @@ class IdeaForm extends React.Component {
     this.uploadIdeaToIPFS = this.uploadIdeaToIPFS.bind(this);
     this.publishFileHash = this.publishFileHash.bind(this);
     this.pinFileHash = this.pinFileHash.bind(this);
-    this.ipfsClient = ipfsClient("/ip4/127.0.0.1/tcp/5001");
-    this.saveToIpfs = this.saveToIpfs.bind(this);
-    //node setup
+    //browser node setup
     this.ipfsNode = new IPFS({
       EXPERIMENTAL: { pubsub: true },
       relay: { enabled: true, hop: { enabled: true } },
@@ -52,6 +49,24 @@ class IdeaForm extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.ipfsNode.once("ready", () => {
+      this.ipfsNode.id((err, res) => {
+        if (err) {
+          throw err;
+        }
+        console.log(res);
+        this.setState({
+          ipfsOptions: {
+            id: res.id,
+            version: res.agentVersion,
+            protocol_version: res.protocolVersion
+          }
+        });
+      });
+    });
+  }
+
   // called every time a file's `status` changes
   handleChangeStatus = ({ meta, file }, status) => {
     console.log(status, meta, file);
@@ -69,22 +84,6 @@ class IdeaForm extends React.Component {
       };
     });
   };
-
-  saveToIpfs(file) {
-    console.log("inside saveToIpfs");
-    let ipfsId;
-    this.ipfsClient
-      .add(file)
-      .then(response => {
-        console.log(response);
-        ipfsId = response[0].hash;
-        console.log(ipfsId);
-        this.setState({ added_file_hash: ipfsId });
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }
 
   uploadIdeaTextToIPFS() {
     this.ipfsNode.files.add(
@@ -150,6 +149,9 @@ class IdeaForm extends React.Component {
       });
   }
 
+  //This is not working since it was not possible to communicate
+  //between the node on the browser
+  //and OSO's node
   publishFileHash() {
     const addr =
       "/ip4/127.0.0.1/tcp/4001/ipfs/QmWtD6ifuSjs6sYfqtNKgNeJYCeyQDbSxpy51fVX1T64RC";
@@ -170,26 +172,6 @@ class IdeaForm extends React.Component {
         return console.error(`failed to publish to ${topic}`, err);
       }
       console.log(`published to ${topic}`);
-    });
-  }
-
-  componentDidMount() {
-    console.log("inspect ipfs node");
-    console.log(this.ifpsNode);
-    this.ipfsNode.once("ready", () => {
-      this.ipfsNode.id((err, res) => {
-        if (err) {
-          throw err;
-        }
-        console.log(res);
-        this.setState({
-          ipfsOptions: {
-            id: res.id,
-            version: res.agentVersion,
-            protocol_version: res.protocolVersion
-          }
-        });
-      });
     });
   }
 
