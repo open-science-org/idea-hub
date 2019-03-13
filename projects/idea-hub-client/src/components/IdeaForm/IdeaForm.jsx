@@ -17,7 +17,10 @@ class IdeaForm extends React.Component {
     this.ipfsClient = ipfsClient("/ip4/127.0.0.1/tcp/5001");
     this.saveToIpfs = this.saveToIpfs.bind(this);
     //node setup
-    this.ipfsNode = new IPFS({ EXPERIMENTAL: { pubsub: true } });
+    this.ipfsNode = new IPFS({
+      EXPERIMENTAL: { pubsub: true },
+      relay: { enabled: true, hop: { enabled: true, active: true } }
+    });
 
     this.state = {
       ipfsOptions: {
@@ -132,11 +135,14 @@ class IdeaForm extends React.Component {
   }
 
   componentDidMount() {
+    console.log("inspect ipfs node");
+    console.log(this.ifpsNode);
     this.ipfsNode.once("ready", () => {
       this.ipfsNode.id((err, res) => {
         if (err) {
           throw err;
         }
+        console.log(res);
         this.setState({
           ipfsOptions: {
             id: res.id,
