@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import IPFS from "ipfs";
 import classes from "./IdeaForm.module.css";
 import Dropzone from "react-dropzone-uploader";
+const wrtc = require("wrtc"); // or require('electron-webrtc')()
+const WStar = require("libp2p-webrtc-star");
+const wstar = new WStar({ wrtc });
 
 const PUBLIC_GATEWAY = "https://ipfs.io/ipfs";
 const ipfsClient = require("ipfs-http-client");
@@ -19,7 +22,20 @@ class IdeaForm extends React.Component {
     //node setup
     this.ipfsNode = new IPFS({
       EXPERIMENTAL: { pubsub: true },
-      relay: { enabled: true, hop: { enabled: true } }
+      relay: { enabled: true, hop: { enabled: true } },
+      config: {
+        Addresses: {
+          Swarm: [
+            "/ip4/127.0.0.1/tcp/4001/ipfs/QmWtD6ifuSjs6sYfqtNKgNeJYCeyQDbSxpy51fVX1T64RC"
+          ]
+        },
+        libp2p: {
+          modules: {
+            transport: [wstar],
+            peerDiscovery: [wstar.discovery]
+          }
+        }
+      }
     });
 
     this.state = {
@@ -92,40 +108,36 @@ class IdeaForm extends React.Component {
   }
 
   uploadIdeaToIPFS(file) {
-    /* const addr = */
-    /* "/ip4/127.0.0.1/tcp/4001/ipfs/QmWtD6ifuSjs6sYfqtNKgNeJYCeyQDbSxpy51fVX1T64RC"; */
-    const addr =
-      "/ip4/104.248.122.220/tcp/4001/ipfs/QmPE7fixEYAwUnmeus3CDAESqZ3yMvNUyrZZMtQ8W66kXd";
-    this.ipfsNode.swarm.connect(addr, function(err) {
+    // if no err is present, connection is now open
+    console.log("over here");
+    this.ipfsNode.add(file, (err, filesAdded) => {
       if (err) {
         throw err;
       }
-      // if no err is present, connection is now open
-      console.log("over here");
-      this.ipfsNode.add(file, (err, filesAdded) => {
-        if (err) {
-          throw err;
-        }
 
-        const hash = filesAdded[0].hash;
-        this.setState(
-          {
-            added_file_hash: hash
-          },
-          () => {
-            this.publishFileHash();
-          }
-        );
-      });
+      const hash = filesAdded[0].hash;
+      this.setState(
+        {
+          added_file_hash: hash
+        },
+        () => {
+          this.publishFileHash();
+        }
+      );
     });
   }
 
   publishFileHash() {
+    this.ipfsNode.swarm.connect(addr, function(err) {
+      if (err) {
+        throw err;
+      }
+    });
     console.log("inside publishFileHash");
     console.log("file hash is:");
     console.log(this.state.added_file_hash);
 
-    const topic = "osoideahubtopic";
+    const topic = "testing123";
     const msg = Buffer.from(this.state.added_file_hash);
 
     this.ipfsNode.pubsub.publish(topic, msg, err => {
