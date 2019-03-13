@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import IPFS from "ipfs";
 import classes from "./IdeaForm.module.css";
 import Dropzone from "react-dropzone-uploader";
+import axios from "axios";
 const wrtc = require("wrtc"); // or require('electron-webrtc')()
 const WStar = require("libp2p-webrtc-star");
 const wstar = new WStar({ wrtc });
@@ -17,6 +18,7 @@ class IdeaForm extends React.Component {
     this.uploadIdeaTextToIPFS = this.uploadIdeaTextToIPFS.bind(this);
     this.uploadIdeaToIPFS = this.uploadIdeaToIPFS.bind(this);
     this.publishFileHash = this.publishFileHash.bind(this);
+    this.pinFileHash = this.pinFileHash.bind(this);
     this.ipfsClient = ipfsClient("/ip4/127.0.0.1/tcp/5001");
     this.saveToIpfs = this.saveToIpfs.bind(this);
     //node setup
@@ -121,13 +123,36 @@ class IdeaForm extends React.Component {
           added_file_hash: hash
         },
         () => {
-          this.publishFileHash();
+          /* this.publishFileHash(); */
+          this.pinFileHash();
         }
       );
     });
   }
 
+  pinFileHash() {
+    var bodyFormData = new FormData();
+    bodyFormData.set("ipfs-path", this.state.added_file_hash);
+    console.log("begin request");
+    axios({
+      method: "post",
+      url: "http://localhost:5001/api/v0/pin/add",
+      data: bodyFormData,
+      config: { headers: { "Content-Type": "multipart/form-data" } }
+    })
+      .then(function(response) {
+        //handle success
+        console.log(response);
+      })
+      .catch(function(response) {
+        //handle error
+        console.log(response);
+      });
+  }
+
   publishFileHash() {
+    const addr =
+      "/ip4/127.0.0.1/tcp/4001/ipfs/QmWtD6ifuSjs6sYfqtNKgNeJYCeyQDbSxpy51fVX1T64RC";
     this.ipfsNode.swarm.connect(addr, function(err) {
       if (err) {
         throw err;
