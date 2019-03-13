@@ -18,12 +18,7 @@ class IdeaForm extends React.Component {
     this.saveToIpfs = this.saveToIpfs.bind(this);
     //node setup
     this.ipfsNode = new IPFS({ EXPERIMENTAL: { pubsub: true } });
-    ipfs.swarm.connect(addr, function(err) {
-      if (err) {
-        throw err;
-      }
-      // if no err is present, connection is now open
-    });
+
     this.state = {
       ipfsOptions: {
         id: null,
@@ -94,6 +89,14 @@ class IdeaForm extends React.Component {
   }
 
   uploadIdeaToIPFS(file) {
+    const addr =
+      "/ip4/127.0.0.1/tcp/4001/ipfs/QmWtD6ifuSjs6sYfqtNKgNeJYCeyQDbSxpy51fVX1T64RC";
+    this.ipfsNode.swarm.connect(addr, function(err) {
+      if (err) {
+        throw err;
+      }
+      // if no err is present, connection is now open
+    });
     console.log("over here");
     this.ipfsNode.add(file, (err, filesAdded) => {
       if (err) {
