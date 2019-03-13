@@ -19,7 +19,7 @@ class IdeaForm extends React.Component {
     //node setup
     this.ipfsNode = new IPFS({
       EXPERIMENTAL: { pubsub: true },
-      relay: { enabled: true, hop: { enabled: true, active: true } }
+      relay: { enabled: true, hop: { enabled: true } }
     });
 
     this.state = {
@@ -92,29 +92,31 @@ class IdeaForm extends React.Component {
   }
 
   uploadIdeaToIPFS(file) {
+    /* const addr = */
+    /* "/ip4/127.0.0.1/tcp/4001/ipfs/QmWtD6ifuSjs6sYfqtNKgNeJYCeyQDbSxpy51fVX1T64RC"; */
     const addr =
-      "/ip4/127.0.0.1/tcp/4001/ipfs/QmWtD6ifuSjs6sYfqtNKgNeJYCeyQDbSxpy51fVX1T64RC";
+      "/ip4/104.248.122.220/tcp/4001/ipfs/QmPE7fixEYAwUnmeus3CDAESqZ3yMvNUyrZZMtQ8W66kXd";
     this.ipfsNode.swarm.connect(addr, function(err) {
       if (err) {
         throw err;
       }
       // if no err is present, connection is now open
-    });
-    console.log("over here");
-    this.ipfsNode.add(file, (err, filesAdded) => {
-      if (err) {
-        throw err;
-      }
-
-      const hash = filesAdded[0].hash;
-      this.setState(
-        {
-          added_file_hash: hash
-        },
-        () => {
-          this.publishFileHash();
+      console.log("over here");
+      this.ipfsNode.add(file, (err, filesAdded) => {
+        if (err) {
+          throw err;
         }
-      );
+
+        const hash = filesAdded[0].hash;
+        this.setState(
+          {
+            added_file_hash: hash
+          },
+          () => {
+            this.publishFileHash();
+          }
+        );
+      });
     });
   }
 
@@ -123,7 +125,7 @@ class IdeaForm extends React.Component {
     console.log("file hash is:");
     console.log(this.state.added_file_hash);
 
-    const topic = "testing123";
+    const topic = "osoideahubtopic";
     const msg = Buffer.from(this.state.added_file_hash);
 
     this.ipfsNode.pubsub.publish(topic, msg, err => {
