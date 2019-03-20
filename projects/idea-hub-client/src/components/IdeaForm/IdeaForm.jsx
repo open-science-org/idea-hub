@@ -17,15 +17,14 @@ class IdeaForm extends React.Component {
     this.uploadIdeaTextToIPFS = this.uploadIdeaTextToIPFS.bind(this);
     this.uploadIdeaToIPFS = this.uploadIdeaToIPFS.bind(this);
     this.publishFileHash = this.publishFileHash.bind(this);
-    this.pinFileHash = this.pinFileHash.bind(this);
     //browser node setup
     this.ipfsNode = new IPFS({
       EXPERIMENTAL: { pubsub: true },
-      relay: { enabled: true, hop: { enabled: true } },
+      relay: { enabled: true, hop: { enabled: false } },
       config: {
         Addresses: {
           Swarm: [
-            "/ip4/127.0.0.1/tcp/4001/ipfs/QmWtD6ifuSjs6sYfqtNKgNeJYCeyQDbSxpy51fVX1T64RC"
+            "/ip4/127.0.0.1/tcp/4001/ipfs/QmPMaDyK2ee95BpjnMyWYiVi46EcZFrY8AUmSzieNSLbEa"
           ]
         },
         libp2p: {
@@ -122,50 +121,17 @@ class IdeaForm extends React.Component {
           added_file_hash: hash
         },
         () => {
-          /* this.publishFileHash(); */
-          this.pinFileHash();
+          this.publishFileHash();
         }
       );
     });
   }
 
-  pinFileHash() {
-    var bodyFormData = new FormData();
-    bodyFormData.set("ipfs-path", this.state.added_file_hash);
-    console.log("begin request");
-    axios({
-      method: "post",
-      url: "http://localhost:5001/api/v0/pin/add",
-      data: bodyFormData,
-      config: { headers: { "Content-Type": "multipart/form-data" } }
-    })
-      .then(function(response) {
-        //handle success
-        console.log(response);
-      })
-      .catch(function(response) {
-        //handle error
-        console.log(response);
-      });
-  }
-
-  //This is not working since it was not possible to communicate
-  //between the node on the browser
-  //and OSO's node
   publishFileHash() {
-    const addr =
-      "/ip4/127.0.0.1/tcp/4001/ipfs/QmWtD6ifuSjs6sYfqtNKgNeJYCeyQDbSxpy51fVX1T64RC";
-    this.ipfsNode.swarm.connect(addr, function(err) {
-      if (err) {
-        throw err;
-      }
-    });
-    console.log("inside publishFileHash");
-    console.log("file hash is:");
-    console.log(this.state.added_file_hash);
-
     const topic = "testing123";
     const msg = Buffer.from(this.state.added_file_hash);
+    console.log("msg is");
+    console.log(this.state.added_file_hash);
 
     this.ipfsNode.pubsub.publish(topic, msg, err => {
       if (err) {
