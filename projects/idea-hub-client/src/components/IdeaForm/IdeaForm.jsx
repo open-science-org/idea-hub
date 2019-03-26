@@ -24,7 +24,7 @@ class IdeaForm extends React.Component {
       config: {
         Addresses: {
           Swarm: [
-            "/ip4/127.0.0.1/tcp/4001/ipfs/QmPMaDyK2ee95BpjnMyWYiVi46EcZFrY8AUmSzieNSLbEa"
+            "/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star"
           ]
         },
         libp2p: {
@@ -128,16 +128,23 @@ class IdeaForm extends React.Component {
   }
 
   publishFileHash() {
-    const topic = "testing123";
-    const msg = Buffer.from(this.state.added_file_hash);
-    console.log("msg is");
-    console.log(this.state.added_file_hash);
+    const addr =
+      "/ip4/127.0.0.1/tcp/9000/ws/ipfs/QmU7VGrHnhhnPnY8HUBWwEN9CCpwTb3WfeVdCjoEne5AUA";
 
-    this.ipfsNode.pubsub.publish(topic, msg, err => {
+    this.ipfsNode.swarm.connect(addr, err => {
       if (err) {
-        return console.error(`failed to publish to ${topic}`, err);
+        throw err;
       }
-      console.log(`published to ${topic}`);
+      const topic = "testing123";
+      const msg = Buffer.from("never give in");
+      console.log(this.ipfsNode);
+
+      this.ipfsNode.pubsub.publish(topic, msg, err => {
+        if (err) {
+          return console.error(`failed to publish to ${topic}`, err);
+        }
+        console.log(`published to ${topic}`);
+      });
     });
   }
 
