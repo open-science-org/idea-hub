@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import IPFS from "ipfs";
 import classes from "./IdeaForm.module.css";
 import Dropzone from "react-dropzone-uploader";
-import axios from "axios";
 const wrtc = require("wrtc"); // or require('electron-webrtc')()
 const WStar = require("libp2p-webrtc-star");
 const wstar = new WStar({ wrtc });
@@ -14,7 +13,6 @@ class IdeaForm extends React.Component {
   constructor(props, context) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.uploadIdeaTextToIPFS = this.uploadIdeaTextToIPFS.bind(this);
     this.uploadIdeaToIPFS = this.uploadIdeaToIPFS.bind(this);
     this.publishFileHash = this.publishFileHash.bind(this);
     //browser node setup
@@ -84,32 +82,8 @@ class IdeaForm extends React.Component {
     });
   };
 
-  uploadIdeaTextToIPFS() {
-    this.ipfsNode.files.add(
-      [Buffer.from(this.state.value)],
-      (err, filesAdded) => {
-        if (err) {
-          throw err;
-        }
-
-        const hash = filesAdded[0].hash;
-
-        this.ipfsNode.files.cat(hash, (err, data) => {
-          if (err) {
-            throw err;
-          }
-          this.setState({
-            added_file_hash: hash,
-            added_file_contents: data.toString()
-          });
-        });
-      }
-    );
-  }
-
   uploadIdeaToIPFS(file) {
-    // if no err is present, connection is now open
-    console.log("over here");
+    console.log("inside uploadIdeaToIPFS...");
     this.ipfsNode.add(file, (err, filesAdded) => {
       if (err) {
         throw err;
