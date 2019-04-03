@@ -181,10 +181,9 @@ class IdeaForm extends React.Component {
                 borderStyle: "none"
               }
             }}
-            getUploadParams={this.getUploadParams}
             onChangeStatus={this.handleChangeStatus}
             onSubmit={this.handleSubmit}
-            accept="image/*,audio/*,video/*"
+            accept="image/*, .pdf"
           />
           <div className={classes.Square} />
         </div>
