@@ -3,18 +3,37 @@ import PropTypes from "prop-types";
 import IPFS from "ipfs";
 import classes from "./IdeaForm.module.css";
 import Dropzone from "react-dropzone-uploader";
+const wrtc = require("wrtc"); // or require('electron-webrtc')()
+const WStar = require("libp2p-webrtc-star");
+const wstar = new WStar({ wrtc });
 
 const PUBLIC_GATEWAY = "https://ipfs.io/ipfs";
-const ipfsClient = require("ipfs-http-client");
 
 class IdeaForm extends React.Component {
   constructor(props, context) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.uploadIdeaTextToIPFS = this.uploadIdeaTextToIPFS.bind(this);
-    this.ipfsClient = ipfsClient("/ip4/127.0.0.1/tcp/5001");
-    this.saveToIpfs = this.saveToIpfs.bind(this);
-    this.ipfsNode = new IPFS();
+    this.uploadIdeaToIPFS = this.uploadIdeaToIPFS.bind(this);
+    this.publishFileHash = this.publishFileHash.bind(this);
+    //browser node setup
+    this.ipfsNode = new IPFS({
+      EXPERIMENTAL: { pubsub: true },
+      relay: { enabled: true, hop: { enabled: false } },
+      config: {
+        Addresses: {
+          Swarm: [
+            "/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star"
+          ]
+        },
+        libp2p: {
+          modules: {
+            transport: [wstar],
+            peerDiscovery: [wstar.discovery]
+          }
+        }
+      }
+    });
+
     this.state = {
       ipfsOptions: {
         id: null,
@@ -25,6 +44,24 @@ class IdeaForm extends React.Component {
       added_file_hash: "",
       added_file_contents: ""
     };
+  }
+
+  componentDidMount() {
+    this.ipfsNode.once("ready", () => {
+      this.ipfsNode.id((err, res) => {
+        if (err) {
+          throw err;
+        }
+        console.log(res);
+        this.setState({
+          ipfsOptions: {
+            id: res.id,
+            version: res.agentVersion,
+            protocol_version: res.protocolVersion
+          }
+        });
+      });
+    });
   }
 
   // called every time a file's `status` changes
@@ -38,63 +75,49 @@ class IdeaForm extends React.Component {
       const reader = new window.FileReader();
       reader.readAsArrayBuffer(file.file);
       reader.onloadend = () => {
-        this.saveToIpfs(Buffer(reader.result));
+        /* this.saveToIpfs(Buffer(reader.result)); */
+        /* You must use file.file to get the blob  */
+        this.uploadIdeaToIPFS(Buffer(reader.result));
       };
     });
   };
 
-  saveToIpfs(file) {
-    console.log("inside saveToIpfs");
-    let ipfsId;
-    this.ipfsClient
-      .add(file)
-      .then(response => {
-        console.log(response);
-        ipfsId = response[0].hash;
-        console.log(ipfsId);
-        this.setState({ added_file_hash: ipfsId });
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }
-
-  uploadIdeaTextToIPFS() {
-    this.ipfsNode.files.add(
-      [Buffer.from(this.state.value)],
-      (err, filesAdded) => {
-        if (err) {
-          throw err;
-        }
-
-        const hash = filesAdded[0].hash;
-
-        this.ipfsNode.files.cat(hash, (err, data) => {
-          if (err) {
-            throw err;
-          }
-          this.setState({
-            added_file_hash: hash,
-            added_file_contents: data.toString()
-          });
-        });
+  uploadIdeaToIPFS(file) {
+    console.log("inside uploadIdeaToIPFS...");
+    this.ipfsNode.add(file, (err, filesAdded) => {
+      if (err) {
+        throw err;
       }
-    );
+
+      const hash = filesAdded[0].hash;
+      this.setState(
+        {
+          added_file_hash: hash
+        },
+        () => {
+          this.publishFileHash();
+        }
+      );
+    });
   }
 
-  componentDidMount() {
-    this.ipfsNode.once("ready", () => {
-      this.ipfsNode.id((err, res) => {
+  publishFileHash() {
+    const addr =
+      "/ip4/127.0.0.1/tcp/9000/ws/ipfs/QmU7VGrHnhhnPnY8HUBWwEN9CCpwTb3WfeVdCjoEne5AUA";
+
+    this.ipfsNode.swarm.connect(addr, err => {
+      if (err) {
+        throw err;
+      }
+      const topic = "testing123";
+      const msg = Buffer.from("never give in");
+      console.log(this.ipfsNode);
+
+      this.ipfsNode.pubsub.publish(topic, msg, err => {
         if (err) {
-          throw err;
+          return console.error(`failed to publish to ${topic}`, err);
         }
-        this.setState({
-          ipfsOptions: {
-            id: res.id,
-            version: res.agentVersion,
-            protocol_version: res.protocolVersion
-          }
-        });
+        console.log(`published to ${topic}`);
       });
     });
   }
