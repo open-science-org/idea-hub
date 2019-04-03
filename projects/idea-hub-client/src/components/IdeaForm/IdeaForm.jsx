@@ -110,7 +110,7 @@ class IdeaForm extends React.Component {
         throw err;
       }
       const topic = "testing123";
-      const msg = Buffer.from("never give in");
+      const msg = Buffer.from(this.state.added_file_hash);
       console.log(this.ipfsNode);
 
       this.ipfsNode.pubsub.publish(topic, msg, err => {
