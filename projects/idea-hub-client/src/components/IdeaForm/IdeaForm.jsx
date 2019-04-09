@@ -6,6 +6,7 @@ import Dropzone from "react-dropzone-uploader";
 const wrtc = require("wrtc"); // or require('electron-webrtc')()
 const WStar = require("libp2p-webrtc-star");
 const wstar = new WStar({ wrtc });
+const OrbitDB = require("orbit-db");
 
 const PUBLIC_GATEWAY = "https://ipfs.io/ipfs";
 
@@ -47,7 +48,8 @@ class IdeaForm extends React.Component {
   }
 
   componentDidMount() {
-    this.ipfsNode.once("ready", () => {
+    this.ipfsNode.on("error", e => console.log(e));
+    this.ipfsNode.on("ready", async () => {
       this.ipfsNode.id((err, res) => {
         if (err) {
           throw err;
@@ -61,6 +63,7 @@ class IdeaForm extends React.Component {
           }
         });
       });
+      const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
     });
   }
 
