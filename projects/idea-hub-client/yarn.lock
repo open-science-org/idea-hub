@@ -8841,9 +8841,9 @@ options@>=0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/options/-/options-0.0.6.tgz#ec22d312806bb53e731773e7cdaefcf1c643128f"
 
-orbit-db-access-controllers@rc1.1:
-  version "0.1.0-rc.1.1"
-  resolved "https://registry.yarnpkg.com/orbit-db-access-controllers/-/orbit-db-access-controllers-0.1.0-rc.1.1.tgz#c3ef766bfd56fb01d2f74f96ee06826aaa4e0668"
+orbit-db-access-controllers@rc2:
+  version "0.1.0-rc.2"
+  resolved "https://registry.yarnpkg.com/orbit-db-access-controllers/-/orbit-db-access-controllers-0.1.0-rc.2.tgz#6e9ddc62db88d15c31e433e4ef4380d3fb6da469"
   dependencies:
     orbit-db-io "~0.0.1"
     p-map-series "^1.0.0"
@@ -8890,9 +8890,9 @@ orbit-db-identity-provider@rc1:
     ethers "^4.0.20"
     orbit-db-keystore rc1.2
 
-orbit-db-identity-provider@rc1.1:
-  version "0.1.2-rc.1.2"
-  resolved "https://registry.yarnpkg.com/orbit-db-identity-provider/-/orbit-db-identity-provider-0.1.2-rc.1.2.tgz#09eef15ee61fa96a80e2e220584417213e708988"
+orbit-db-identity-provider@rc1.3:
+  version "0.1.0-rc.1.3"
+  resolved "https://registry.yarnpkg.com/orbit-db-identity-provider/-/orbit-db-identity-provider-0.1.0-rc.1.3.tgz#2ffa1122dd81cfebc32f797d8965b74a271bec7a"
   dependencies:
     ethers "^4.0.20"
     orbit-db-keystore rc1.2
@@ -8904,19 +8904,6 @@ orbit-db-io@~0.0.1:
     cids "^0.5.7"
     ipld-dag-pb "^0.15.2"
     pify "^4.0.1"
-
-orbit-db-keystore@rc1.1:
-  version "0.2.0-rc.1.1"
-  resolved "https://registry.yarnpkg.com/orbit-db-keystore/-/orbit-db-keystore-0.2.0-rc.1.1.tgz#4ac20987b6188660e0e560e380e9edc7bd73b1e3"
-  dependencies:
-    elliptic "^6.4.1"
-    level-js "~3.0.0"
-    leveldown "~3.0.2"
-    levelup "^4.0.0"
-    libp2p-crypto "^0.16.0"
-    libp2p-crypto-secp256k1 "^0.3.0"
-    lru "^3.1.0"
-    mkdirp "^0.5.1"
 
 orbit-db-keystore@rc1.2:
   version "0.2.0-rc.1.2"
@@ -8932,9 +8919,9 @@ orbit-db-keystore@rc1.2:
     mkdirp "^0.5.1"
     safe-buffer "^5.1.2"
 
-orbit-db-kvstore@rc1:
-  version "1.5.0-rc.1"
-  resolved "https://registry.yarnpkg.com/orbit-db-kvstore/-/orbit-db-kvstore-1.5.0-rc.1.tgz#3024f27b8e23a94dfa4faccb1b2d00625e4b1c10"
+orbit-db-kvstore@rc2:
+  version "1.5.0-rc2"
+  resolved "https://registry.yarnpkg.com/orbit-db-kvstore/-/orbit-db-kvstore-1.5.0-rc2.tgz#280b6930c6ef4e8a4ddb4eeb046df2b68cc66e4b"
   dependencies:
     orbit-db-store rc1
 
@@ -8956,25 +8943,25 @@ orbit-db-store@rc1:
     p-each-series "^1.0.0"
     readable-stream "~2.3.5"
 
-orbit-db@0.20.0-rc.1.1:
-  version "0.20.0-rc.1.1"
-  resolved "https://registry.yarnpkg.com/orbit-db/-/orbit-db-0.20.0-rc.1.1.tgz#fb7a70b2a24d63b47b086e10d2ad2f85d3301cc6"
+orbit-db@0.20.0-rc3:
+  version "0.20.0-rc3"
+  resolved "https://registry.yarnpkg.com/orbit-db/-/orbit-db-0.20.0-rc3.tgz#19b8dcff5d96bb1273d5acaf7dc0ff467fde507f"
   dependencies:
     cids "^0.5.7"
     ipfs-pubsub-1on1 "~0.0.4"
     localstorage-down "^0.6.7"
     logplease "^1.2.14"
     multihashes "^0.4.12"
-    orbit-db-access-controllers rc1.1
+    orbit-db-access-controllers rc2
     orbit-db-cache "~0.2.4"
     orbit-db-counterstore rc1
     orbit-db-docstore rc1
     orbit-db-eventstore rc1
     orbit-db-feedstore rc1
-    orbit-db-identity-provider rc1.1
+    orbit-db-identity-provider rc1.3
     orbit-db-io "~0.0.1"
-    orbit-db-keystore rc1.1
-    orbit-db-kvstore rc1
+    orbit-db-keystore rc1.2
+    orbit-db-kvstore rc2
     orbit-db-pubsub "~0.5.5"
     orbit-db-store rc1
 
