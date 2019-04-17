@@ -54,6 +54,7 @@ class IdeaForm extends React.Component {
         if (err) {
           throw err;
         }
+        console.log("Node ID");
         console.log(res);
         this.setState({
           ipfsOptions: {
@@ -63,7 +64,6 @@ class IdeaForm extends React.Component {
           }
         });
       });
-      const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
     });
   }
 
@@ -104,7 +104,18 @@ class IdeaForm extends React.Component {
     });
   }
 
-  publishFileHash() {
+  async publishFileHash() {
+    const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
+    const db = await orbitdb.keyvalue("first-database");
+    console.log("DB ONLINE");
+    console.log(db.address.toString());
+    console.log("DB PUT starting...");
+    await db.put(this.context.web3.network, this.state.added_file_hash);
+    console.log("DB PUT completed!");
+    const value = db.get(this.context.web3.network);
+    console.log("Fetched value:");
+    console.log(value);
+
     const addr =
       "/ip4/127.0.0.1/tcp/9000/ws/ipfs/QmU7VGrHnhhnPnY8HUBWwEN9CCpwTb3WfeVdCjoEne5AUA";
 
@@ -113,7 +124,9 @@ class IdeaForm extends React.Component {
         throw err;
       }
       const topic = "testing123";
-      const msg = Buffer.from("never give in");
+      console.log("FILE HASH IS: ");
+      console.log(this.state.added_file_hash);
+      const msg = Buffer.from(this.state.added_file_hash);
       console.log(this.ipfsNode);
 
       this.ipfsNode.pubsub.publish(topic, msg, err => {
