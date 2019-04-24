@@ -105,13 +105,19 @@ class IdeaForm extends React.Component {
   }
 
   async publishFileHash() {
+    //setup DB
     const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
-    const db = await orbitdb.keyvalue("first-database");
+    const db = await orbitdb.keyvalue("oso-database");
+    await db.load();
+    console.log("get gon");
+    const killua = db.get("gon");
+    console.log(killua);
     console.log("DB ONLINE");
     console.log(db.address.toString());
     console.log("DB PUT starting...");
-    await db.put(this.context.web3.network, this.state.added_file_hash);
+    await db.put("gon", "killua");
     console.log("DB PUT completed!");
+    await db.load();
     const value = db.get(this.context.web3.network);
     console.log("Fetched value:");
     console.log(value);
