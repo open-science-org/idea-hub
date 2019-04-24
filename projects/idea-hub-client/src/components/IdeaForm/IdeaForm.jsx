@@ -104,24 +104,27 @@ class IdeaForm extends React.Component {
     });
   }
 
-  async publishFileHash() {
-    //setup DB
+  saveToOrbitDB = async () => {
     const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
     const db = await orbitdb.keyvalue("oso-database");
     await db.load();
-    console.log("get gon");
-    const killua = db.get("gon");
-    console.log(killua);
-    console.log("DB ONLINE");
+    console.log("DB LOADED, ADDRESS:");
     console.log(db.address.toString());
-    console.log("DB PUT starting...");
-    await db.put("gon", "killua");
-    console.log("DB PUT completed!");
-    await db.load();
-    const value = db.get(this.context.web3.network);
-    console.log("Fetched value:");
-    console.log(value);
+    await db.put(this.context.web3.selectedAccount, "hello testing");
+    console.log("DB PUT COMPLETED");
+  };
 
+  fetchFromOrbitDB = async () => {
+    const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
+    const db = await orbitdb.keyvalue("oso-database");
+    await db.load();
+    console.log("STARTING FETCH...");
+    const value = await db.get(this.context.web3.selectedAccount);
+    console.log("SAVED VALUE IS");
+    console.log(value);
+  };
+
+  async publishFileHash() {
     const addr =
       "/ip4/127.0.0.1/tcp/9000/ws/ipfs/QmU7VGrHnhhnPnY8HUBWwEN9CCpwTb3WfeVdCjoEne5AUA";
 
@@ -193,6 +196,12 @@ class IdeaForm extends React.Component {
             Checkout the uploaded idea at: {PUBLIC_GATEWAY}/
             {this.state.added_file_hash}
           </p>
+          <button onClick={e => this.saveToOrbitDB()}>
+            Test Save toOrbit DB
+          </button>
+          <button onClick={e => this.fetchFromOrbitDB()}>
+            Test Fetch from Orbit DB
+          </button>
           <hr />
         </div>
         <div className={classes.Upload}>
