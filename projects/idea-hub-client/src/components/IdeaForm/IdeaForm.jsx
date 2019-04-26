@@ -59,7 +59,7 @@ class IdeaForm extends React.Component {
       const db = await orbitdb.keyvalue(DB_ADDRESS);
       await db.load();
       console.log("STARTING FETCH...");
-      const value = await db.get("key");
+      const value = await db.get("key5");
       console.log("SAVED VALUE IS");
       console.log(value);
       this.ipfsNode.id((err, res) => {
@@ -84,7 +84,7 @@ class IdeaForm extends React.Component {
     await db.load();
     console.log("DB LOADED, ADDRESS:");
     console.log(db.address.toString());
-    await db.put("key", "value");
+    await db.put("key6", "value7");
     console.log("DB PUT COMPLETED");
   };
 
@@ -93,7 +93,7 @@ class IdeaForm extends React.Component {
     const db = await orbitdb.keyvalue(DB_ADDRESS);
     await db.load();
     console.log("STARTING FETCH...");
-    const value = await db.get("key");
+    const value = await db.get("key6");
     console.log("SAVED VALUE IS");
     console.log(value);
   };
