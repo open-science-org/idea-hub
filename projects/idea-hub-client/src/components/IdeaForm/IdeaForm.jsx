@@ -47,7 +47,10 @@ class IdeaForm extends React.Component {
   }
 
   componentDidMount() {
-    this.ipfsNode.once("ready", () => {
+    this.ipfsNode.once("ready", async () => {
+      await this.ipfsNode.swarm.connect(
+        "/ip4/192.168.0.13/tcp/9000/ws/ipfs/QmU7VGrHnhhnPnY8HUBWwEN9CCpwTb3WfeVdCjoEne5AUA"
+      );
       this.ipfsNode.id((err, res) => {
         if (err) {
           throw err;
