@@ -6,6 +6,9 @@ import Dropzone from "react-dropzone-uploader";
 const wrtc = require("wrtc"); // or require('electron-webrtc')()
 const WStar = require("libp2p-webrtc-star");
 const wstar = new WStar({ wrtc });
+const OrbitDB = require("orbit-db");
+const DB_ADDRESS =
+  "/orbitdb/zdpuAyXB3vCQ68XTugA4YJuXXKd7t7NZmKrgg2jDH6LNfU7Wm/oso-database";
 
 const PUBLIC_GATEWAY = "https://ipfs.io/ipfs";
 
@@ -51,6 +54,14 @@ class IdeaForm extends React.Component {
       await this.ipfsNode.swarm.connect(
         "/ip4/192.168.0.13/tcp/9000/ws/ipfs/QmU7VGrHnhhnPnY8HUBWwEN9CCpwTb3WfeVdCjoEne5AUA"
       );
+
+      const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
+      const db = await orbitdb.keyvalue(DB_ADDRESS);
+      await db.load();
+      console.log("STARTING FETCH...");
+      const value = await db.get("key");
+      console.log("SAVED VALUE IS");
+      console.log(value);
       this.ipfsNode.id((err, res) => {
         if (err) {
           throw err;
@@ -66,6 +77,26 @@ class IdeaForm extends React.Component {
       });
     });
   }
+
+  saveToOrbitDB = async () => {
+    const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
+    const db = await orbitdb.keyvalue(DB_ADDRESS);
+    await db.load();
+    console.log("DB LOADED, ADDRESS:");
+    console.log(db.address.toString());
+    await db.put("key", "value");
+    console.log("DB PUT COMPLETED");
+  };
+
+  fetchFromOrbitDB = async () => {
+    const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
+    const db = await orbitdb.keyvalue(DB_ADDRESS);
+    await db.load();
+    console.log("STARTING FETCH...");
+    const value = await db.get("key");
+    console.log("SAVED VALUE IS");
+    console.log(value);
+  };
 
   // called every time a file's `status` changes
   handleChangeStatus = ({ meta, file }, status) => {
@@ -174,6 +205,12 @@ class IdeaForm extends React.Component {
             Checkout the uploaded idea at: {PUBLIC_GATEWAY}/
             {this.state.added_file_hash}
           </p>
+          <button onClick={e => this.saveToOrbitDB()}>
+            Test Save toOrbit DB
+          </button>
+          <button onClick={e => this.fetchFromOrbitDB()}>
+            Test Fetch from Orbit DB
+          </button>
           <hr />
         </div>
         <div className={classes.Upload}>
