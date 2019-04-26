@@ -8,7 +8,7 @@ const WStar = require("libp2p-webrtc-star");
 const wstar = new WStar({ wrtc });
 const OrbitDB = require("orbit-db");
 const DB_ADDRESS =
-  "/orbitdb/zdpuAyXB3vCQ68XTugA4YJuXXKd7t7NZmKrgg2jDH6LNfU7Wm/oso-database";
+  "/orbitdb/zdpuAnK4iFnSQvVernGZPi59mH7umnTr9haFjGSH5tD42Grx4/event-log";
 
 const PUBLIC_GATEWAY = "https://ipfs.io/ipfs";
 
@@ -55,13 +55,6 @@ class IdeaForm extends React.Component {
         "/ip4/192.168.0.13/tcp/9000/ws/ipfs/QmU7VGrHnhhnPnY8HUBWwEN9CCpwTb3WfeVdCjoEne5AUA"
       );
 
-      const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
-      const db = await orbitdb.keyvalue(DB_ADDRESS);
-      await db.load();
-      console.log("STARTING FETCH...");
-      const value = await db.get("key5");
-      console.log("SAVED VALUE IS");
-      console.log(value);
       this.ipfsNode.id((err, res) => {
         if (err) {
           throw err;
@@ -80,22 +73,25 @@ class IdeaForm extends React.Component {
 
   saveToOrbitDB = async () => {
     const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
-    const db = await orbitdb.keyvalue(DB_ADDRESS);
+    const db = await orbitdb.log(DB_ADDRESS);
     await db.load();
     console.log("DB LOADED, ADDRESS:");
     console.log(db.address.toString());
-    await db.put("key6", "value7");
-    console.log("DB PUT COMPLETED");
+    await db.add({ entry: "entry 1" });
+    console.log("DB ENTRY ADDED");
   };
 
   fetchFromOrbitDB = async () => {
     const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
-    const db = await orbitdb.keyvalue(DB_ADDRESS);
+    const db = await orbitdb.eventlog(DB_ADDRESS);
     await db.load();
     console.log("STARTING FETCH...");
-    const value = await db.get("key6");
-    console.log("SAVED VALUE IS");
-    console.log(value);
+    const all = db
+      .iterator({ limit: -1 })
+      .collect()
+      .map(e => e.payload.value);
+    console.log("SAVED VALUES ARE");
+    console.log(all);
   };
 
   // called every time a file's `status` changes
