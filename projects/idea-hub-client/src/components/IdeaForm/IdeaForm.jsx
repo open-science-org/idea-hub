@@ -8,7 +8,7 @@ const WStar = require("libp2p-webrtc-star");
 const wstar = new WStar({ wrtc });
 const OrbitDB = require("orbit-db");
 const DB_ADDRESS =
-  "/orbitdb/zdpuAmxkbZKozrpxbeffK3vfvHs5pMxbqz6pYD46aDWKei5gd/oso-test";
+  "/orbitdb/zdpuArDkTiMgYZmwBXjsMkTe3DmDv1kwfpYJh9sjvangzBEXo/test5";
 
 const PUBLIC_GATEWAY = "https://ipfs.io/ipfs";
 
@@ -72,12 +72,22 @@ class IdeaForm extends React.Component {
   }
 
   saveToOrbitDB = async () => {
+    const options = {
+      // Give write access to everyone
+      accessController: {
+        write: ["*"]
+      }
+    };
+
     const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
-    const db = await orbitdb.log("oso-test");
+    const db = await orbitdb.log("test5", options);
     await db.load();
     console.log("DB LOADED, ADDRESS:");
     console.log(db.address.toString());
-    await db.add({ entry: "entry 1" });
+    await db.add({
+      address: "alskdjalkjdhaslkjhaksjh",
+      file_hash: "alksjdhalksjhdaklsjhadsklj"
+    });
     console.log("DB ENTRY ADDED");
   };
 
@@ -131,25 +141,17 @@ class IdeaForm extends React.Component {
     });
   }
 
-  publishFileHash() {
-    const addr =
-      "/ip4/127.0.0.1/tcp/9000/ws/ipfs/QmU7VGrHnhhnPnY8HUBWwEN9CCpwTb3WfeVdCjoEne5AUA";
-
-    this.ipfsNode.swarm.connect(addr, err => {
-      if (err) {
-        throw err;
-      }
-      const topic = "testing123";
-      const msg = Buffer.from(this.state.added_file_hash);
-      console.log(this.ipfsNode);
-
-      this.ipfsNode.pubsub.publish(topic, msg, err => {
-        if (err) {
-          return console.error(`failed to publish to ${topic}`, err);
-        }
-        console.log(`published to ${topic}`);
-      });
+  async publishFileHash() {
+    const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
+    const db = await orbitdb.log(DB_ADDRESS);
+    await db.load();
+    console.log("DB LOADED, ADDRESS:");
+    console.log(db.address.toString());
+    await db.add({
+      address: this.context.web3.selectedAccount,
+      file: this.state.added_file_hash
     });
+    console.log("DB ENTRY ADDED");
   }
 
   getValidationState() {
