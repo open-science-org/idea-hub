@@ -8,7 +8,7 @@ const WStar = require("libp2p-webrtc-star");
 const wstar = new WStar({ wrtc });
 const OrbitDB = require("orbit-db");
 const DB_ADDRESS =
-  "/orbitdb/zdpuAnK4iFnSQvVernGZPi59mH7umnTr9haFjGSH5tD42Grx4/event-log";
+  "/orbitdb/zdpuAmxkbZKozrpxbeffK3vfvHs5pMxbqz6pYD46aDWKei5gd/oso-test";
 
 const PUBLIC_GATEWAY = "https://ipfs.io/ipfs";
 
@@ -52,7 +52,7 @@ class IdeaForm extends React.Component {
   componentDidMount() {
     this.ipfsNode.once("ready", async () => {
       await this.ipfsNode.swarm.connect(
-        "/ip4/192.168.0.13/tcp/9000/ws/ipfs/QmU7VGrHnhhnPnY8HUBWwEN9CCpwTb3WfeVdCjoEne5AUA"
+        "/dns4/0.tcp.ngrok.io/tcp/15968/ws/ipfs/QmRHLtKEYxTwJaL9K4RNL4fp2vFL9Z1p7LVpdpdHvS7zSb"
       );
 
       this.ipfsNode.id((err, res) => {
@@ -73,7 +73,7 @@ class IdeaForm extends React.Component {
 
   saveToOrbitDB = async () => {
     const orbitdb = await OrbitDB.createInstance(this.ipfsNode);
-    const db = await orbitdb.log(DB_ADDRESS);
+    const db = await orbitdb.log("oso-test");
     await db.load();
     console.log("DB LOADED, ADDRESS:");
     console.log(db.address.toString());
