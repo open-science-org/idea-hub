@@ -1,5 +1,7 @@
 Play with our POC http://www.oso.network/idea-hub/
 
+Read our proposal of creating pay-to-publish platform using Proof of Idea https://github.com/open-science-org/wiki/blob/master/Proof_of_Idea.pdf
+
 # idea-hub
 
 Idea-hub is a decentralized knowledge repository where researchers can **publish and store** scientific publications. This can have a tremendous positive impact for scientific research by allowing researchers to share their ideas rapidly and efficiently, thereby accelerating the scientific research. Since intermediate and incremental steps can also be published, this system inherently encourages reproducibility in scientific research and also provides a way to **formally verify the intellectual contribution** of a researcher.
