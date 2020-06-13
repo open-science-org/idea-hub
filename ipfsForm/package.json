@@ -9,8 +9,8 @@
   "author": "Kirk Gosik",
   "license": "MIT",
   "dependencies": {
-    "browserify": "^16.1.1",
-    "http-server": "^0.11.1",
-    "ipfs-api": "^18.2.1"
+    "browserify": "^16.5.1",
+    "http-server": "^0.12.3",
+    "ipfs-api": "^26.1.2"
   }
 }
