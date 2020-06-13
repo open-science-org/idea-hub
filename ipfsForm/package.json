@@ -4,6 +4,7 @@
   "description": "first attempt at a form input for ipfs",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "start": "browserify index.js > bundle.js && http-server -a 127.0.0.1 -p 8888"
   },
   "author": "Kirk Gosik",
@@ -12,5 +13,11 @@
     "browserify": "^16.5.1",
     "http-server": "^0.12.3",
     "ipfs-api": "^26.1.2"
+  },
+  "devDependencies": {
+    "ecstatic": "^4.1.4"
+  },
+  "resolutions": {
+    "ecstatic": "^4.1.4"
   }
 }
