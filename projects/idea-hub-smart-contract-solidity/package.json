@@ -1,0 +1,12 @@
+{
+  "bin": {},
+  "scripts": {
+    "truffle": "truffle"
+  },
+  "dependencies": {
+    "chai": "^4.2.0",
+    "ethereumjs-abi": "^0.6.8",
+    "ethereumjs-utils": "^5.2.5",
+    "truffle": "^5.1.37"
+  }
+}
