@@ -1,11 +1,13 @@
 pragma solidity >=0.6 <0.7;
+/**
+ * @title IdeaHub Contract Interface
+ * @dev Contains description all the functions and events required for operational IdeaHub platform
+ */
 abstract contract IIdeaHub {
 
-    //// Views ////
-
     /**
-    * @dev getIdea info by hash
-    * @param ideaNo Sequential no obtained on registering idea (starts from 1)
+    * @dev getIdea info by it's sequential idea number
+    * @param ideaNo Sequential number obtained on registering idea (starts from 1)
     * @return id Hashed identity of idea
     * @return author Author of the idea
     * @return isPublished true if idea is already published
@@ -15,8 +17,8 @@ abstract contract IIdeaHub {
 
     /**
     * @dev Get details of particular revision of an idea.
-    *      Each  idea can have multiple revisions. revision with highest no is the latest
-    * @param ideaNo Sequential no obtained on registering idea (starts from 1)
+    *      Each  idea can have multiple revisions. revision with highest number is the latest
+    * @param ideaNo Sequential number obtained on registering idea (starts from 1)
     * @param revisionNo the revision position in list to return details about, the last position gives the latest revision.
     * @return contentHash InfoHash of the content in this revision
     * @return validations No of validations received by the revision
@@ -26,7 +28,7 @@ abstract contract IIdeaHub {
     /**
     * @dev Get the validator address at given position in the validator list for an idea revision
     *      Validators validate particular revision of the idea.
-    * @param ideaNo Sequential no obtained on registering idea
+    * @param ideaNo Sequential number obtained on registering idea
     * @param revisionNo position for the revision to select
     * @param validatorNo position in the validator list for idea revision (starts from 1)
     */
@@ -55,10 +57,8 @@ abstract contract IIdeaHub {
     */
     function validatorAddress(bytes32 id) virtual public view returns (address);
 
-    //// Transaction Functions ////
-
     /**
-    * @dev register an userId and assosiate it with a user.
+    * @dev register an userId and associate it with a user.
     * When user doesn't want to spend fee it is called by foundation, it requires the signature of user.
     * @param userId off-chain generated identifier for the user
     * @param _address associated address of the user.
@@ -67,6 +67,7 @@ abstract contract IIdeaHub {
     * @param s Signature fragment - s
     */
     function registerAuthor(bytes32 userId, address _address, bytes32 r, bytes32 s, uint8 v) virtual public;
+
     /**
     * @dev Register yourself as an user in the platform.
     * @param userId off-chain generated user Identifier
@@ -100,15 +101,15 @@ abstract contract IIdeaHub {
     function register(bytes32 ideaId, address author, bytes32 contentHash, uint8 v, bytes32 r, bytes32 s) virtual public;
 
     /**
-    * @dev Validate an idea. Validators can call this function to validate other people's idea (not their own).
-    * @param ideaNo Sequential no obtained on registering idea
+    * @dev Validate an idea. Validators can call this function mark other author's idea (not their own) as reviewed and validated.
+    * @param ideaNo Sequential number obtained on registering idea
     * @param revisionNo Idea revision to validate
     */
     function validate(uint256 ideaNo, uint256 revisionNo) virtual public;
 
     /**
-    * @dev Validate an idea. Validators can sign the validation details and send it to foundation if they cannot pay for the gas price.
-    * @param ideaNo Sequential no obtained on registering idea
+    * @dev Mark an idea as reviewed and validated. Validators can sign the validation details and send it to foundation if they cannot pay for the gas price.
+    * @param ideaNo Sequential number obtained on registering idea
     * @param revisionNo Idea revision to validate
     * @param validator Validator's address
     * @param v Signature fragment - v
@@ -121,16 +122,42 @@ abstract contract IIdeaHub {
     /**
     * @dev Publish an idea. Call is successful only if the idea has already reached validation threshold.
     * Anyone can publish an idea which has reached it's validation threshold.
-    * @param ideaNo Sequential no obtained on registering idea
+    * @param ideaNo Sequential number obtained on registering idea
     * @param revisionNo Idea revision to validate
     */
     function publish(uint256 ideaNo, uint256 revisionNo) virtual public;
 
-    // events
+    /**
+     * @dev new Author is registered to platform
+     * @param id Hashed Id of the author
+     */
     event AuthorRegistered(bytes32 id);
+
+    /**
+     * @dev new Validator is registered to platform
+     */
     event ValidatorRegistered(bytes32 id);
+
+    /**
+     * @dev new Idea is registered to platform
+     * @param ideaNo sequential idea number, starting from 1
+     * @param revisionNo the revision number for that idea, starting from 1
+     */
     event Registered(uint256 ideaNo, uint256 revisionNo);
+
+    /**
+     * @dev An idea was validated
+     * @param ideaNo idea number that was validate
+     * @param revisionNo revision number of the idea that was validated
+     * @param newValidationCount total number of validations reached
+     */
     event Validated(uint256 ideaNo, uint256 revisionNo, uint256 newValidationCount);
+
+    /**
+     * @dev An idea was published
+     * @param ideaNo the sequential idea Number that was published
+     * @param revisionNo the revision number of the idea that was published
+     */
     event Published(uint256 ideaNo, uint256 revisionNo);
 
 }

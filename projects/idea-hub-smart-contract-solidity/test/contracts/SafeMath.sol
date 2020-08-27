@@ -1,8 +1,8 @@
 pragma solidity >=0.6 <0.7;
 
-// ----------------------------------------------------------------------------
-// Safe maths
-// ----------------------------------------------------------------------------
+/**
+* @title Safe Math Operations library
+*/
 library SafeMath {
     function add(uint a, uint b) internal pure returns (uint c) {
         c = a + b;

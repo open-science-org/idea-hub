@@ -1,6 +1,9 @@
 pragma solidity >=0.6;
 
-// copied from https://en.bitcoinwiki.org/wiki/ERC20#The_ERC20_Token_Standard_Interface
+/**
+ * @title ERC20 Token Interface
+ * @dev copied from https://en.bitcoinwiki.org/wiki/ERC20#The_ERC20_Token_Standard_Interface
+ */
 abstract contract IERC20 {
     function totalSupply() virtual public view returns (uint);
 

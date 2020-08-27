@@ -1,9 +1,13 @@
 pragma solidity >=0.6 <0.7;
 
 
-// for details about the concept look at
-// https://github.com/ethereum/EIPs/blob/master/EIPS/eip-712.md
-// and https://docs.metamask.io/guide/signing-data.html
+/**
+ * @title Signing configuration for IdeaHub
+ * @dev for details about the concept look at
+ * https://github.com/ethereu   m/EIPs/blob/master/EIPS/eip-712.md
+ * and https://docs.metamask.io/guide/signing-data.html
+ */
+
 abstract contract IdeaHubSigning {
     struct EIP712Domain {
         string name;

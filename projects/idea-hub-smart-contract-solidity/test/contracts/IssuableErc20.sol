@@ -1,9 +1,15 @@
 pragma solidity >=0.6 <0.7;
 
-import "./IERC20.sol";
-import "./Authenticated.sol";
 import "./SafeMath.sol";
+import "../../contracts/IERC20.sol";
+import "../../contracts/Authenticated.sol";
 
+/**
+ * @title Issuable ERC20
+ * @dev Erc20 with token minting option.
+ *      For explaination of the contract look https://en.bitcoinwiki.org/wiki/ERC20#Sample_Fixed_Supply_Token_Contract
+ *      Only difference here is in transferFrom() function which allows minting of tokens when from address is 0x000
+ */
 contract IssuableErc20 is IERC20, Authenticated {
     using SafeMath for uint;
 
@@ -19,12 +25,12 @@ contract IssuableErc20 is IERC20, Authenticated {
     // ------------------------------------------------------------------------
     // Constructor
     // ------------------------------------------------------------------------
-    constructor() public {
+    constructor(string memory _symbol,string memory _name,uint256 supply,uint8 _decimals) public {
         manualConstruct();
-        symbol = "E20";
-        name = "Demo Issuable Erc20";
-        decimals = 18;
-        _totalSupply = 1000000 * 10 ** uint(decimals);
+        symbol = _symbol;
+        name = _name;
+        decimals = _decimals;
+        _totalSupply = supply * 10 ** uint(decimals);
         balances[owner] = _totalSupply;
         Transfer(address(0), owner, _totalSupply, bytes(""));
 

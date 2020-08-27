@@ -1,5 +1,5 @@
 module.exports = {
-    contracts_directory: "./contracts",
+    contracts_directory: ["./contracts","./test/contracts"],
     contracts_build_directory: "./build/tmp/truffle",
     migrations_directory: "./migrations",
     tests_directory: "./test",
