@@ -1,3 +1,5 @@
+> **2026 update.** OSO restarted in October 2026. The publishing platform is now described in the [OSO v1 design doc](https://github.com/open-science-org/OSO/blob/master/docs/design-v1.md), with submission, validation and review in [OIP-11](https://github.com/open-science-org/OIPs/blob/master/OIPS/oip-11.md) and the public ledger in [OIP-13](https://github.com/open-science-org/OIPs/blob/master/OIPS/oip-13.md). The proof of concept below dates from 2019–2020 and is kept for history.
+
 Play with our POC http://www.oso.network/idea-hub/
 
 Read our proposal of creating pay-to-publish platform using Proof of Idea https://github.com/open-science-org/wiki/blob/master/Proof_of_Idea.pdf
